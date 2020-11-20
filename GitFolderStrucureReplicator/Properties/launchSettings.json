@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GitFolderStructureReplicator": {
+      "commandName": "Project",
+      "commandLineArgs": "H:\\Coding\\eImpfpass"
+    }
+  }
+}
