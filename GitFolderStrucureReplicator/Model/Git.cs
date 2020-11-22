@@ -8,9 +8,9 @@ namespace GitFolderStructureReplicator
     {
         public string Url { get; set; }
         public string CurrentBranch { get; set; }
-        public string Remote { get; set; }
-        public string Merge { get; set; }
+        //public string Remote { get; set; }
+        //public string Merge { get; set; }
 
-        public User User { get; set; }
+        //public User User { get; set; }
     }
 }
