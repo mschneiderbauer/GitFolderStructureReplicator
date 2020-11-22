@@ -15,6 +15,8 @@ namespace GitFolderStructureReplicator
         public List<Log> Logs { get; } = new List<Log>();
         public string RootPath { get; private set; }
 
+        private const string ROOT = "root";
+
         private Serializer serializer;
         private GitInterface gitInterface;
 
@@ -28,7 +30,7 @@ namespace GitFolderStructureReplicator
         public void ExtractFolderStructure()
         {
             DirectoryNode root = ExtractStructure(RootPath);
-            root.Name = "root";
+            root.Name = ROOT;
 
             if (serializer.WriteToFile(root, Logs))
             {
@@ -36,7 +38,7 @@ namespace GitFolderStructureReplicator
             }
             else
             {
-                System.Console.WriteLine("Error occured during extraction, see logs_extraction.txt for details");
+                System.Console.WriteLine("Error occured during extraction, see logs for details");
             }
         }
 
@@ -59,11 +61,9 @@ namespace GitFolderStructureReplicator
 
         private bool ExtractStructure(string path, DirectoryNode node)
         {
-            //node.Path = GetRelativePath(path);
-            //node.Name = Path.GetFileName(path);
             node.Name = Path.GetFileName(path);
 
-            string[] dirs = Directory.GetDirectories(path);
+            string[] dirs = Directory.GetDirectories(path);        
             dirs = FilterDirectories(dirs);
             if (dirs.Length == 0)
             {
@@ -99,7 +99,7 @@ namespace GitFolderStructureReplicator
             {
                 if (node.Children != null && node.Children.Count > 0)
                 {
-                    if (node.Name != "root")
+                    if (node.Name != ROOT)
                     {
                         path += "\\" + node.Name;
                         Directory.CreateDirectory(path);

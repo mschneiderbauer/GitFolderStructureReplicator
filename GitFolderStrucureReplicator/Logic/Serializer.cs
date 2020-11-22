@@ -11,8 +11,7 @@ namespace GitFolderStructureReplicator
     {
         public string Filename { get; private set; } = "dirstruct.json";
         public string FolderPath { get; private set; } = "generated";
-        public string FilenameExtractionLogs { get; set; } = "logs_extraction.txt";
-        public string FilenameReplicationLogs { get; set; } = "logs_replication.txt";
+        public string FilenameLogs { get; set; } = "logs.txt";
 
         public Serializer(string folderPath)
         {
@@ -20,14 +19,7 @@ namespace GitFolderStructureReplicator
             {
                 FolderPath = folderPath;
             }
-            else
-            {
-                Directory.CreateDirectory(FolderPath);
-            }
-        }
-
-        public Serializer()
-        {
+            Directory.CreateDirectory(FolderPath);
         }
 
         public bool WriteToFile(DirectoryNode root, List<Log> logs)
@@ -37,7 +29,7 @@ namespace GitFolderStructureReplicator
             {
                 File.WriteAllText(GetFilePath(Filename), JsonConvert.SerializeObject(root, GetJsonSerializerSettings()));
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 logs.Add(new Log { DateTime = DateTime.Now, Message = ex.Message });
                 serializingSuccess = false;
@@ -80,7 +72,7 @@ namespace GitFolderStructureReplicator
         {
             if (logs.Count > 0)
             {
-                File.WriteAllText(extraction ? GetFilePath(FilenameExtractionLogs) : GetFilePath(FilenameReplicationLogs), Log.GetText(logs));
+                File.AppendAllText(GetFilePath(FilenameLogs), Log.GetText(logs));
             }
         }
     }

@@ -14,7 +14,7 @@ namespace GitFolderStructureReplicator
 
         public override string ToString()
         {
-            return $"{DateTime}{Environment.NewLine}{Path}{Environment.NewLine}{Message}";
+            return $"{DateTime} {Path}{Environment.NewLine}{Message}";
         }
 
         public static string GetText(List<Log> logs)

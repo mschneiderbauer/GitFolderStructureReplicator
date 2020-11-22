@@ -15,21 +15,21 @@ namespace GitFolderStructureReplicator
         {
             Console.Write("Extract or replicate (e/r): ");
             bool extract = Console.ReadLine().ToLower().StartsWith('e');
-            Console.WriteLine();
 
             Console.Write("Root Directory: ");
             string rootDirectory = Console.ReadLine();
-            Console.WriteLine();
-
-            Console.Write("Folder for generated files (leave empty to place in program folder): ");
-            string folderPath = Console.ReadLine();
-            Console.WriteLine();
 
             if (string.IsNullOrWhiteSpace(rootDirectory))
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Root Directory cannot be empty!");
+                Console.ForegroundColor = ConsoleColor.White;
                 return;
             }
+
+            Console.Write("Folder for generated files (leave empty to place in program folder): ");
+            string folderPath = Console.ReadLine();
+            Console.WriteLine();         
 
             Structure s = new Structure(rootDirectory, folderPath);
 

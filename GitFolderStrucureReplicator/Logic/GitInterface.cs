@@ -67,6 +67,7 @@ namespace GitFolderStructureReplicator
                     if (!String.IsNullOrEmpty(e.Data))
                     {
                         result.Append(e.Data).Append(Environment.NewLine);
+                        Console.WriteLine(e.Data);
                     }
                 });
 
@@ -76,6 +77,7 @@ namespace GitFolderStructureReplicator
                     if (!String.IsNullOrEmpty(e.Data))
                     {
                         error.Append(e.Data).Append(Environment.NewLine);
+                        Console.WriteLine(e.Data);
                     }
                 });
 
@@ -118,6 +120,7 @@ namespace GitFolderStructureReplicator
             string dirName = node.Name;
             Console.WriteLine($"Cloning into {path} from {node.Git.Url}...");
             CallGitActionCommand(path, $"clone {node.Git.Url} {dirName}", logs);
+            Console.WriteLine();
 
             if (Directory.Exists($"{path}\\{dirName}"))
             {
@@ -126,8 +129,11 @@ namespace GitFolderStructureReplicator
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Cloning error, directory doesn't exist");
+                Console.ForegroundColor = ConsoleColor.White;
             }
+            Console.WriteLine();
         }
     }
 }
