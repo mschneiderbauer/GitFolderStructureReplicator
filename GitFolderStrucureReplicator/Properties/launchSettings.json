@@ -1,8 +1,7 @@
 {
   "profiles": {
     "GitFolderStructureReplicator": {
-      "commandName": "Project",
-      "commandLineArgs": "H:\\Coding"
+      "commandName": "Project"
     }
   }
 }

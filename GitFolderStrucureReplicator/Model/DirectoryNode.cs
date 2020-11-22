@@ -6,7 +6,8 @@ namespace GitFolderStructureReplicator
 {
     public class DirectoryNode
     {
-        public string Path { get; set; }
+        public string Name { get; set; }
+        //public string Name { get; set; }
         public Git Git { get; set; }
 
         public List<DirectoryNode> Children { get; set; }

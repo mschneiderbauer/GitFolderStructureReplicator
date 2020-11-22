@@ -12,40 +12,56 @@ namespace GitFolderStructureReplicator
 {
     public class Structure
     {
-
-
-        public List<string> Logs { get; } = new List<string>();
+        public List<Log> Logs { get; } = new List<Log>();
         public string RootPath { get; private set; }
 
         private Serializer serializer;
         private GitInterface gitInterface;
 
-        public Structure()
+        public Structure(string rootPath, string folderPath)
         {
-            this.serializer = new Serializer();
+            this.RootPath = rootPath;
+            this.serializer = new Serializer(folderPath);
             this.gitInterface = new GitInterface();
         }
 
-        public void CreateAndWriteFolderStructure(string rootPath)
+        public void ExtractFolderStructure()
         {
-            this.RootPath = rootPath;
+            DirectoryNode root = ExtractStructure(RootPath);
+            root.Name = "root";
 
-            DirectoryNode root = GetStructureRoot(rootPath);
-            root.Path = "root";
-
-            serializer.WriteToFile(root, Logs);
+            if (serializer.WriteToFile(root, Logs))
+            {
+                System.Console.WriteLine("Extraction successfull");
+            }
+            else
+            {
+                System.Console.WriteLine("Error occured during extraction, see logs_extraction.txt for details");
+            }
         }
 
-        private DirectoryNode GetStructureRoot(string rootPath)
+        public void ReplicateFolderStructure()
+        {
+            DirectoryNode root = serializer.ReadFromFile(Logs);
+            if (root != null)
+            {
+                ReplicateStructure(RootPath, root);
+            }
+            serializer.WriteLogs(Logs, false);
+        }
+
+        private DirectoryNode ExtractStructure(string rootPath)
         {
             DirectoryNode root = new DirectoryNode();
-            CreateStructure(rootPath, root);
+            ExtractStructure(rootPath, root);
             return root;
         }
 
-        private bool CreateStructure(string path, DirectoryNode node)
+        private bool ExtractStructure(string path, DirectoryNode node)
         {
-            node.Path = GetRelativePath(path);
+            //node.Path = GetRelativePath(path);
+            //node.Name = Path.GetFileName(path);
+            node.Name = Path.GetFileName(path);
 
             string[] dirs = Directory.GetDirectories(path);
             dirs = FilterDirectories(dirs);
@@ -69,9 +85,31 @@ namespace GitFolderStructureReplicator
             }
         }
 
-        private string GetRelativePath(string path)
+        private void ReplicateStructure(string path, DirectoryNode node)
         {
-            return path.Replace(RootPath, string.Empty).TrimStart('\\');
+            if (node == null)
+            {
+                return;
+            }
+            if (node.Git != null)
+            {
+                gitInterface.Clone(path, node, Logs);
+            }
+            else
+            {
+                if (node.Children != null && node.Children.Count > 0)
+                {
+                    if (node.Name != "root")
+                    {
+                        path += "\\" + node.Name;
+                        Directory.CreateDirectory(path);
+                    }
+                    foreach (var child in node.Children)
+                    {
+                        ReplicateStructure(path, child);
+                    }
+                }
+            }
         }
 
         private bool SearchInSubDirectories(DirectoryNode node, string[] dirs)
@@ -82,7 +120,7 @@ namespace GitFolderStructureReplicator
             {
                 DirectoryNode n = new DirectoryNode();
 
-                if (CreateStructure(dir, n))
+                if (ExtractStructure(dir, n))
                 {
                     node.Children.Add(n);
                     hasGitChild = true;
