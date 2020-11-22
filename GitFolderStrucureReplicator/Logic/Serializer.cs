@@ -18,7 +18,11 @@ namespace GitFolderStructureReplicator
         {
             if (!string.IsNullOrWhiteSpace(folderPath))
             {
-                FolderPath = folderPath;   
+                FolderPath = folderPath;
+            }
+            else
+            {
+                Directory.CreateDirectory(FolderPath);
             }
         }
 
