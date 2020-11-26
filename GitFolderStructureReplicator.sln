@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitFolderStructureReplicator", "GitFolderStrucureReplicator\GitFolderStructureReplicator.csproj", "{3918F444-E0E0-44E1-9E73-F7DF5F9E6E27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitFolderStructureReplicator", "GitFolderStructureReplicator\GitFolderStructureReplicator.csproj", "{3918F444-E0E0-44E1-9E73-F7DF5F9E6E27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

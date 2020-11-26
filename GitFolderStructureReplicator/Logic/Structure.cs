@@ -45,7 +45,7 @@ namespace GitFolderStructureReplicator
         public void ReplicateFolderStructure()
         {
             DirectoryNode root = serializer.ReadFromFile(Logs);
-            if (root != null)
+            if (root is not null)
             {
                 ReplicateStructure(RootPath, root);
             }
@@ -65,7 +65,7 @@ namespace GitFolderStructureReplicator
 
             string[] dirs = Directory.GetDirectories(path);        
             dirs = FilterDirectories(dirs);
-            if (dirs.Length == 0)
+            if (dirs.Length is 0)
             {
                 return false;
             }
@@ -87,19 +87,19 @@ namespace GitFolderStructureReplicator
 
         private void ReplicateStructure(string path, DirectoryNode node)
         {
-            if (node == null)
+            if (node is null)
             {
                 return;
             }
-            if (node.Git != null)
+            if (node.Git is not null)
             {
                 gitInterface.Clone(path, node, Logs);
             }
             else
             {
-                if (node.Children != null && node.Children.Count > 0)
+                if (node.Children is not null && node.Children.Count > 0)
                 {
-                    if (node.Name != ROOT)
+                    if (node.Name is not ROOT)
                     {
                         path += "\\" + node.Name;
                         Directory.CreateDirectory(path);
